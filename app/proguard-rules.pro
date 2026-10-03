@@ -1,0 +1,1 @@
+-keepclassmembers class in.sursandconnect.app.MainActivity$NativeBridge { public *; }
