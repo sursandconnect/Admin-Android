@@ -1,0 +1,399 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f28c28"><title>Super Admin</title>
+<style>
+:root{--bg:#f8fafc;--panel:#fff;--panel2:#fff8ee;--text:#263238;--muted:#667085;--border:#e6ebe7;--s:#f28c28;--g:#238b45;--red:#b91c1c}
+html.dark{--bg:#111827;--panel:#1f2937;--panel2:#273449;--text:#f8fafc;--muted:#cbd5e1;--border:#374151}
+*{box-sizing:border-box}html,body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,a{font-family:inherit}.head{height:72px;margin:8px 10px 0;border-radius:18px;background:linear-gradient(135deg,#ff9d42,#f28c28,#e8740e);display:flex;align-items:center;gap:10px;padding:9px 11px;box-shadow:0 11px 26px rgba(219,112,17,.22);position:relative;z-index:50}
+.logo{width:48px;height:48px;border-radius:13px;background:#fff;object-fit:contain;padding:2px;box-shadow:0 5px 13px rgba(122,68,16,.17)}
+.headcopy{min-width:0;flex:1}.headcopy h1{margin:0;color:#fff;font-size:18px}.headcopy p{margin:3px 0 0;color:rgba(255,255,255,.92);font-size:8.5px}
+.headbtns{display:flex;gap:6px}.iconbtn{width:38px;height:38px;border:0;border-radius:11px;background:#fff;color:#bd5d08;font-size:18px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 5px 13px rgba(122,68,16,.15)}
+.dot{display:none;position:absolute;right:5px;top:4px;width:8px;height:8px;border-radius:50%;background:#dc2626;border:1px solid #fff}
+.menu{display:none;position:absolute;right:10px;top:66px;width:215px;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:7px;box-shadow:0 16px 38px rgba(15,23,42,.2);z-index:100}.menu.active{display:block}.menu button,.menu a{width:100%;border:0;background:transparent;color:var(--text);padding:9px 8px;border-radius:9px;text-align:left;font-size:9px;font-weight:800;display:flex;gap:8px;align-items:center;text-decoration:none}
+.toast{position:fixed;left:50%;bottom:18px;transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:9000;min-width:220px;max-width:88vw;padding:10px 13px;border-radius:12px;background:#176b35;color:#fff;box-shadow:0 14px 34px rgba(0,0,0,.22);font-size:9px;font-weight:900;text-align:center;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}.toast.error{background:#b91c1c}
+.modal{display:none;position:fixed;inset:0;background:rgba(15,23,42,.58);z-index:3000;align-items:center;justify-content:center;padding:13px}.modal.active{display:flex}.confirm{z-index:5000!important}.dialog{width:min(96vw,700px);max-height:90vh;overflow:auto;background:var(--panel);color:var(--text);border-radius:18px;padding:14px;box-shadow:0 28px 80px rgba(0,0,0,.34)}.dialoghead{display:flex;justify-content:space-between;align-items:center;gap:8px}.dialoghead h3{margin:0;font-size:15px}.close{width:32px;height:32px;border:0;border-radius:9px;background:var(--panel2);color:var(--text);font-size:18px}
+.small{border:0;border-radius:9px;padding:8px 10px;font-size:8px;font-weight:900}.green{background:#eaf7ed;color:#176b35}.red{background:#fff1f1;color:#b91c1c}.orange{background:#fff0dd;color:#b45309}.blue{background:#eef4ff;color:#1d4ed8}
+@media(max-width:520px){.headcopy h1{font-size:15px}.headcopy p{font-size:7.5px}.logo{width:43px;height:43px}}
+
+html,body{height:100%;overflow:hidden}.shell{height:100%;display:flex;flex-direction:column}.grid{flex:1;min-height:0;padding:7px 10px 9px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(58px,auto);gap:6px;overflow-y:auto;overflow-x:hidden}.card{border:0;border-radius:12px;color:#fff;text-decoration:none;display:flex;align-items:center;gap:6px;padding:6px;min-height:0;box-shadow:0 4px 0 rgba(15,23,42,.09),0 8px 13px rgba(15,23,42,.08);overflow:hidden}.card:nth-child(6n+1){background:linear-gradient(145deg,#ff8a5b,#e85d3f)}.card:nth-child(6n+2){background:linear-gradient(145deg,#4fb7f3,#2563eb)}.card:nth-child(6n+3){background:linear-gradient(145deg,#ec6f9b,#db2777)}.card:nth-child(6n+4){background:linear-gradient(145deg,#8b7cf6,#6d4adf)}.card:nth-child(6n+5){background:linear-gradient(145deg,#47b77f,#1f8a55)}.card:nth-child(6n+6){background:linear-gradient(145deg,#f3b44e,#df8a18)}.card i{width:30px;height:30px;min-width:30px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:15px;box-shadow:0 2px 7px rgba(15,23,42,.12)}.card b{font-size:7.6px;line-height:1.1;overflow-wrap:anywhere}.login{max-width:430px;margin:30px auto;background:var(--panel);border-radius:18px;padding:16px;box-shadow:0 12px 30px rgba(15,23,42,.12)}.field{display:flex;flex-direction:column;gap:5px;margin-top:9px}.field label{font-size:9px;font-weight:800}.pw{position:relative}input{width:100%;border:1px solid var(--border);border-radius:10px;padding:10px;background:var(--panel);color:var(--text)}.pw input{padding-right:50px}.pw button{position:absolute;right:4px;top:4px;height:32px;border:0;border-radius:7px;background:var(--panel2);color:var(--text);font-size:8px}.loginbtn{width:100%;border:0;border-radius:10px;padding:11px;background:#238b45;color:#fff;font-size:9px;font-weight:900;margin-top:11px}.homeNotice{display:none;position:fixed;left:12px;right:12px;top:88px;max-width:470px;margin:auto;background:var(--panel);border:1px solid var(--border);border-left:5px solid #f28c28;border-radius:15px;padding:11px 38px 11px 11px;box-shadow:0 18px 42px rgba(15,23,42,.22);z-index:800}.homeNotice.show{display:block}.homeNotice h4{margin:0 0 4px;font-size:10px}.homeNotice p{margin:0;font-size:8px;color:var(--muted);line-height:1.45}.homeNotice .x{position:absolute;right:7px;top:7px;width:27px;height:27px;border:0;border-radius:8px;background:var(--panel2);color:var(--text)}.homeNotice .view{margin-top:7px;border:0;border-radius:9px;padding:7px 9px;background:#238b45;color:#fff;font-size:8px;font-weight:900}
+</style></head><body><div class="shell">
+<header class="head"><img class="logo" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgM6ePTCVaqvhVtE9SqPzEyzrYrHjo0MlxUbzHS1D8ORCNX_at01YJcY6a7ltTxA2AaYEuojBw-VotVudZXLNUHVSs6xQvLX6zbNBh-bVnm0v6gURU0yStk_fObHB9rGNwbkf2v_GTyAmcwAG0m8srp0at1riLJSCvOLU3kFneNoNlX-C1XLbioi4RtmDfU/s1600/IMG_20260820_101456.png"><div class="headcopy"><h1>Super Admin</h1><p>Sursand Connect owner admin panel</p></div><div class="headbtns"><button class="iconbtn" id="bell">🔔<span id="bellDot" class="dot"></span></button><button class="iconbtn" id="menuBtn">☰</button></div><div class="menu" id="menu"><button onclick="toggleTheme()">🌓 Change Theme</button><button onclick="openPassword()">🔑 Change Password</button><a href="staff.html?action=create">➕ Create Admin</a><a href="staff.html">👥 Staff Admins</a><button onclick="logout()">↪ Logout</button></div></header>
+<div id="loginBox" class="login" style="display:none"><h2 style="margin:0;font-size:16px">Super Admin Login</h2><div class="field"><label>Admin ID</label><input id="user"></div><div class="field"><label>Password</label><div class="pw"><input id="password" type="password"><button id="pwToggle">Show</button></div></div><button class="loginbtn" id="loginBtn">Login</button><div id="status" style="font-size:9px;margin-top:8px"></div></div>
+<main id="grid" class="grid" style="display:none"></main>
+<div id="homeNotice" class="homeNotice"><button class="x" onclick="homeNotice.classList.remove('show')">×</button><h4 id="noticeTitle"></h4><p id="noticeMsg"></p><button class="view" onclick="openNotice()">View Request</button></div>
+<div id="pwModal" class="modal"><div class="dialog" style="max-width:430px"><div class="dialoghead"><h3>Change Super Admin Password</h3><button class="close" onclick="pwModal.classList.remove('active')">×</button></div><div class="field"><label>Current Password</label><div class="pw"><input id="curPw" type="password"><button onclick="togglePw('curPw',this)">Show</button></div></div><div class="field"><label>New Password</label><div class="pw"><input id="newPw" type="password"><button onclick="togglePw('newPw',this)">Show</button></div></div><div class="field"><label>Confirm Password</label><div class="pw"><input id="conPw" type="password"><button onclick="togglePw('conPw',this)">Show</button></div></div><button class="loginbtn" onclick="changePassword()">Update Password</button></div></div>
+<div id="confirmModal" class="modal confirm"><div class="dialog" style="max-width:390px"><div class="dialoghead"><h3 id="confirmTitle">Confirm</h3><button class="close" onclick="resolveConfirm(false)">×</button></div><p id="confirmText" style="font-size:10px;color:var(--muted);line-height:1.5"></p><div style="display:flex;justify-content:flex-end;gap:8px"><button class="small" onclick="resolveConfirm(false)">Cancel</button><button id="confirmYes" class="small green" onclick="resolveConfirm(true)">Confirm</button></div></div></div>
+<div id="toast" class="toast"></div>
+<script>window.scMessage=window.scMessage||function(m,e){const t=document.getElementById("toast");if(t){t.textContent=m||"Done";t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200);}};
+const API="https://script.google.com/macros/s/AKfycbwpMVP0rN61F7uVL1znqycdLCZ-Dlz7TWnHT9VdVjmXYFoTbJM48DN6clKN6SmSxRX2/exec";
+const TOKEN_KEY='scSuperAdminToken';
+const MODULES=[{"id": "businesses", "icon": "🏪", "title": "Businesses"}, {"id": "services", "icon": "🛠️", "title": "Local Services"}, {"id": "healthcare", "icon": "🏥", "title": "Healthcare"}, {"id": "doctors", "icon": "👨‍⚕️", "title": "Doctors"}, {"id": "education", "icon": "🎓", "title": "Education"}, {"id": "transport", "icon": "🚌", "title": "Transport"}, {"id": "places", "icon": "📍", "title": "Important Places"}, {"id": "governmentOffices", "icon": "🏛️", "title": "Government Offices"}, {"id": "events", "icon": "📅", "title": "Events & Announcements"}, {"id": "notifications", "icon": "🔔", "title": "Public Notifications"}, {"id": "representatives", "icon": "👥", "title": "Representatives"}, {"id": "cityConnect", "icon": "💬", "title": "City Connect"}, {"id": "changeMakers", "icon": "✨", "title": "Change Makers"}, {"id": "contacts", "icon": "✉️", "title": "Contact Messages"}, {"id": "agriculture", "icon": "🌾", "title": "Agriculture"}, {"id": "usefulLinks", "icon": "🌐", "title": "Useful Links"}, {"id": "governmentServices", "icon": "🏢", "title": "Government Services"}, {"id": "importantContacts", "icon": "☎️", "title": "Important Contacts"}, {"id": "pathology", "icon": "🧪", "title": "Pathology Settings"}, {"id": "medicineOrders", "icon": "💊", "title": "Medicine Order Settings"}, {"id": "jobs", "icon": "💼", "title": "Jobs"}, {"id": "users", "icon": "👤", "title": "App Users"}, {"id": "localAds", "icon": "📣", "title": "Local Advertisements"}, {"id": "adminNotifications", "icon": "📥", "title": "Request Notifications"}, {"id":"settings","icon":"⚙️","title":"App Settings"}];
+
+const $=id=>document.getElementById(id);
+
+let token='';
+let notifications=[];
+let latest=null;
+let confirmResolve=null;
+
+function post(payload){
+  return fetch(API,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(payload),
+    redirect:'follow'
+  })
+  .then(r=>r.text())
+  .then(t=>{
+    let x;
+    try{x=JSON.parse(t)}catch(e){const m=String(t||'').match(/\{[\s\S]*\}/);if(m){try{x=JSON.parse(m[0])}catch(_){}}if(!x)throw new Error('Server returned a non-JSON response. Redeploy the current Code.gs web app and try again.')}
+    if(!x||x.success!==true)throw new Error(x&&x.error?x.error:'Request failed.');
+    return x;
+  });
+}
+
+function toastMsg(message,isError=false){
+  const el=$('toast');
+  if(!el)return;
+  el.textContent=message||'Done successfully.';
+  el.classList.toggle('error',isError);
+  el.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer=setTimeout(()=>el.classList.remove('show'),2200);
+}
+
+function renderModules(){
+  const box=$('grid');
+  if(!box)return;
+  box.innerHTML=MODULES.map(m=>
+    `<a class="card" href="module.html?section=${encodeURIComponent(m.id)}"><i>${m.icon}</i><b>${m.title}</b></a>`
+  ).join('');
+}
+
+function showLogin(){
+  const loginBox=$('loginBox');
+  const grid=$('grid');
+  if(loginBox)loginBox.style.display='block';
+  if(grid)grid.style.display='none';
+}
+
+function showApp(){
+  const loginBox=$('loginBox');
+  const grid=$('grid');
+
+  if(loginBox)loginBox.style.display='none';
+  if(grid)grid.style.display='grid';
+
+  renderModules();
+  setTimeout(function(){checkNotifications()},0);
+
+  if(!window._notificationTimer){
+    window._notificationTimer=setInterval(checkNotifications,60000);
+  }
+}
+
+async function doLogin(){
+  const userEl=$('user');
+  const passEl=$('password');
+  const statusEl=$('status');
+  const btn=$('loginBtn');
+
+  const userValue=userEl?userEl.value.trim():'';
+  const passwordValue=passEl?passEl.value:'';
+
+  if(!userValue||!passwordValue){
+    if(statusEl)statusEl.textContent='Enter Admin ID and password.';
+    return;
+  }
+
+  if(statusEl)statusEl.textContent='Checking...';
+  if(btn)btn.disabled=true;
+
+  try{
+    const r=await post({
+      action:'adminLogin',
+      user:userValue,
+      password:passwordValue
+    });
+
+    token=r&&r.data&&r.data.token?r.data.token:'';
+
+    if(!token)throw new Error('No admin session received.');
+
+    localStorage.setItem(TOKEN_KEY,token);try{if(window.SursandNative&&SursandNative.setAdminToken)SursandNative.setAdminToken(token)}catch(_){}setTimeout(warmAdminModules,0);
+
+    if(passEl)passEl.value='';
+    if(statusEl)statusEl.textContent='';
+
+    showApp();
+  }
+  catch(e){
+    if(statusEl)statusEl.textContent=e.message||'Login failed.';
+  }
+  finally{
+    if(btn)btn.disabled=false;
+  }
+}
+
+async function restore(){
+  applyTheme();
+  token=localStorage.getItem(TOKEN_KEY)||'';if(token){try{if(window.SursandNative&&SursandNative.setAdminToken)SursandNative.setAdminToken(token)}catch(_){}setTimeout(warmAdminModules,0)}
+  if(!token){showLogin();return}
+  // Do not block Admin startup on a network round-trip.
+  showApp();
+  post({action:'adminData',section:'adminNotifications',token}).catch(function(e){
+    // Keep the current screen usable on temporary network/server failures.
+    // Authentication errors will still be handled by protected module requests.
+  });
+}
+
+function logout(){
+  const old=token;
+  token='';
+  localStorage.removeItem(TOKEN_KEY);
+  if(old)post({action:'adminLogout',token:old}).catch(function(){});
+  location.reload();
+}
+
+function togglePw(id,button){
+  const el=$(id);
+  if(!el)return;
+  const show=el.type==='password';
+  el.type=show?'text':'password';
+  if(button)button.textContent=show?'Hide':'Show';
+}
+
+function toggleTheme(){
+  const current=localStorage.getItem('scSuperTheme')||'light';
+  localStorage.setItem('scSuperTheme',current==='dark'?'light':'dark');
+  applyTheme();
+  const menu=$('menu');
+  if(menu)menu.classList.remove('active');
+}
+
+function applyTheme(){
+  const current=localStorage.getItem('scSuperTheme')||'light';
+  document.documentElement.classList.toggle('dark',current==='dark');
+}
+
+function openPassword(){
+  const menu=$('menu');
+  const modal=$('pwModal');
+  if(menu)menu.classList.remove('active');
+  if(modal)modal.classList.add('active');
+}
+
+function askConfirm(title,text,buttonText){
+  $('confirmTitle').textContent=title||'Confirm';
+  $('confirmText').textContent=text||'Are you sure?';
+  $('confirmYes').textContent=buttonText||'Confirm';
+  $('confirmModal').classList.add('active');
+  return new Promise(resolve=>{confirmResolve=resolve});
+}
+
+function resolveConfirm(value){
+  $('confirmModal').classList.remove('active');
+  if(confirmResolve){
+    const r=confirmResolve;
+    confirmResolve=null;
+    r(value);
+  }
+}
+
+async function changePassword(){
+  const current=$('curPw').value;
+  const next=$('newPw').value;
+  const confirmNext=$('conPw').value;
+
+  if(!current||!next||!confirmNext){
+    toastMsg('Complete all password fields.',true);
+    return;
+  }
+
+  if(next!==confirmNext){
+    toastMsg('New passwords do not match.',true);
+    return;
+  }
+
+  if(!await askConfirm(
+    'Change Password',
+    'Change the Super Admin password?',
+    'Change Password'
+  ))return;
+
+  try{
+    const r=await post({
+      action:'adminChangePassword',
+      token,
+      currentPassword:current,
+      newPassword:next
+    });
+
+    $('curPw').value='';
+    $('newPw').value='';
+    $('conPw').value='';
+    $('pwModal').classList.remove('active');
+
+    toastMsg(
+      r&&r.data&&r.data.message
+        ? r.data.message
+        : 'Password updated successfully.'
+    );
+  }
+  catch(e){
+    toastMsg(e.message||'Unable to update password.',true);
+  }
+}
+
+function nkey(n){
+  return 'scSuperSeen:'+String(
+    n.ID||
+    n['Request ID']||
+    n.Title||
+    JSON.stringify(n)
+  );
+}
+
+async function checkNotifications(){
+  if(!token)return;
+
+  try{
+    const r=await post({
+      action:'adminData',
+      section:'adminNotifications',
+      token
+    });
+
+    notifications=Array.isArray(r.data)?r.data:[];
+
+    const unseen=
+      notifications.filter(
+        n=>!localStorage.getItem(nkey(n))
+      );
+
+    const dot=$('bellDot');
+    if(dot)dot.style.display=unseen.length?'block':'none';
+
+    latest=unseen.length
+      ? unseen[unseen.length-1]
+      : null;
+
+    if(latest){
+      $('noticeTitle').textContent=
+        latest.Title||
+        latest['Request Type']||
+        'New request';
+
+      $('noticeMsg').textContent=
+        latest.Message||
+        latest['Request ID']||
+        '';
+
+      $('homeNotice').classList.add('show');
+    }
+  }
+  catch(e){
+    // Notification polling should never blank the home screen.
+  }
+}
+
+function openNotice(){
+  if(!latest)return;
+
+  localStorage.setItem(
+    nkey(latest),
+    '1'
+  );
+
+  location.href=
+    'module.html?section=adminNotifications&requestId='+
+    encodeURIComponent(
+      latest['Request ID']||''
+    );
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const bell=$('bell');
+  const menuBtn=$('menuBtn');
+  const pwToggle=$('pwToggle');
+  const loginBtn=$('loginBtn');
+  const passwordEl=$('password');
+
+  if(bell){
+    bell.addEventListener(
+      'click',
+      ()=>location.href='module.html?section=adminNotifications'
+    );
+  }
+
+  if(menuBtn){
+    menuBtn.addEventListener('click',()=>{
+      const menu=$('menu');
+      if(menu)menu.classList.toggle('active');
+    });
+  }
+
+  if(pwToggle){
+    pwToggle.addEventListener(
+      'click',
+      ()=>togglePw('password',pwToggle)
+    );
+  }
+
+  if(loginBtn){
+    loginBtn.addEventListener(
+      'click',
+      doLogin
+    );
+  }
+
+  if(passwordEl){
+    passwordEl.addEventListener('keydown',e=>{
+      if(e.key==='Enter')doLogin();
+    });
+  }
+
+  document.addEventListener('click',e=>{
+    const menu=$('menu');
+    if(
+      menu&&
+      menu.classList.contains('active')&&
+      !e.target.closest('#menu')&&
+      !e.target.closest('#menuBtn')
+    ){
+      menu.classList.remove('active');
+    }
+  });
+
+  restore();
+});
+</script></div>
+<script>
+(function scFastAdminHomeV12(){
+  const token=localStorage.getItem("scSuperAdminToken");
+  if(!token)return;
+  // Module cards are static and should not wait for network data.
+  try{
+    const grid=document.getElementById("grid");
+    if(grid && typeof renderModules==="function" && !grid.children.length){
+      renderModules();
+      grid.style.display="grid";
+    }
+  }catch(e){}
+})();
+</script>
+<script src="admin-header-refresh.js"></script>
+<script>
+async function warmAdminModules(){
+  if(!token||window.__scAdminWarm)return;
+  window.__scAdminWarm=true;
+  try{
+    const r=await post({action:'adminDataAll',token}),all=(r&&r.data)||{};
+    Object.keys(all).forEach(function(k){
+      if(Array.isArray(all[k]))try{localStorage.setItem('scAdminCache:'+k,JSON.stringify(all[k]))}catch(_){}
+    });
+    localStorage.setItem('scAdminLastFullSync',String(Date.now()));
+  }catch(_){}
+  finally{window.__scAdminWarm=false;}
+}
+window.addEventListener('online',function(){warmAdminModules();});
+</script></body></html>
