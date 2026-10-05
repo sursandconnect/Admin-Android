@@ -44,6 +44,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.widget.FrameLayout;
 
 import java.util.Locale;
 import java.io.OutputStream;
